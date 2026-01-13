@@ -1,4 +1,4 @@
-# Legalyze: An Agentic Retrieval-Augmented Generation Framework for Reducing Legal Research and Drafting Latency in Pakistani Jurisdictions
+# Legalyze: Bridging the Judicial Backlog in Pakistan through Agentic Retrieval-Augmented Generation for Automated Judicial Decision Support
 
 **Legalyze** is a state-of-the-art, sovereign agentic framework designed to transform the judicial workflow within Pakistani jurisdictions. By bridging the gap between raw statutory data and actionable legal intelligence, Legalyze reduces the "Research-Drafting Latency" from hours of manual labor to mere minutes of verified AI synthesis.
 
