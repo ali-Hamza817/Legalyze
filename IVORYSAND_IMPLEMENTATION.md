@@ -82,3 +82,4 @@
 - Ensure all modals and dialogs respect IvorySand theme
 - Test charts and data visualizations in IvorySand
 
+

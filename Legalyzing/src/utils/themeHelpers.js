@@ -12,3 +12,4 @@ export const isDarkTheme = (mode) => mode === 'dark';
 export const isLightTheme = (mode) => mode === 'light' || mode === 'earthTone';
 export const isEarthTone = (mode) => mode === 'earthTone';
 
+

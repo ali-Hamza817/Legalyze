@@ -8,10 +8,12 @@ const { protect } = require('../middleware/auth');
 const User = require('../models/User');
 const SystemPrompt = require('../models/SystemPrompt');
 const LegalDoc = require('../models/LegalDoc');
-const { processDocument, generateEmbedding } = require('../utils/documentProcessor'); // Need generateEmbedding exposed or use utility
+const Conversation = require('../models/Conversation');
+const ComplianceCheck = require('../models/ComplianceCheck');
+const CaseBuildingSession = require('../models/CaseBuildingSession');
+const { processDocument, generateEmbedding } = require('../utils/documentProcessor'); 
 const pineconeService = require('../services/pineconeService');
 const LoginLog = require('../models/LoginLog');
-const ComplianceCheck = require('../models/ComplianceCheck');
 const SystemSettings = require('../models/SystemSettings');
 const axios = require('axios');
 
@@ -178,69 +180,63 @@ router.get('/stats', adminAuth, async (req, res) => {
         const totalDocs = await LegalDoc.countDocuments();
         const pendingDocs = await LegalDoc.countDocuments({ status: 'Indexing' });
         
-        // 2. Feature Specific Counts
-        const Conversation = require('../models/Conversation');
-        const ComplianceCheck = require('../models/ComplianceCheck'); // Ensure model exists or handle graceful fail
-        const CaseBuildingSession = require('../models/CaseBuildingSession'); // Ensure model exists
-
-        // Safe counts (handle if models don't exist in dev env yet)
+        // Feature Specific Counts
         let complianceCount = 0;
         let caseBuilderCount = 0;
+        let totalChats = 0;
+
         try { complianceCount = await ComplianceCheck.countDocuments(); } catch(e) {}
         try { caseBuilderCount = await CaseBuildingSession.countDocuments(); } catch(e) {}
+        try { totalChats = await Conversation.countDocuments(); } catch(e) {}
         
-        const totalChats = await Conversation.countDocuments();
-        
-        // 3. Document Categories Distribution
+        // 2. Document Categories Distribution
         const docCategories = await LegalDoc.aggregate([
             { $group: { _id: "$category", value: { $sum: 1 } } },
             { $project: { name: "$_id", value: 1, _id: 0 } }
         ]);
 
-        // 4. Historical Trends (User Growth & Feature Usage)
+        // 3. Historical Trends
         let days = 7;
         if (range === '24h') days = 1;
         if (range === '30d') days = 30;
         if (range === 'all') days = 90;
 
         const startDate = new Date();
+        startDate.setHours(0, 0, 0, 0);
         startDate.setDate(startDate.getDate() - days);
 
-        // User Growth Trend
-        const userTrend = await User.aggregate([
-            { $match: { createdAt: { $gte: startDate } } },
-            { $group: {
-                _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                users: { $sum: 1 }
-            }},
-            { $sort: { _id: 1 } }
-        ]);
+        // Define aggregation pipeline helper
+        const getTrend = async (Model, fieldName) => {
+            return await Model.aggregate([
+                { $match: { createdAt: { $gte: startDate } } },
+                { $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    count: { $sum: 1 }
+                }},
+                { $sort: { _id: 1 } }
+            ]);
+        };
 
-        // Mock daily activity for other features (since those models might not have timestamps ready for aggregation yet)
-        // In prod, replace with actual aggregate calls similar to userTrend
-        const history = [];
-        const dateMap = new Map();
+        const userTrend = await getTrend(User, 'users');
+        const chatTrend = await getTrend(Conversation, 'requests');
+        const complianceTrend = await getTrend(ComplianceCheck, 'compliance');
 
-        // Populate from User Trend
-        userTrend.forEach(item => {
-            dateMap.set(item._id, { name: item._id, users: item.users, requests: 0, compliance: 0 });
-        });
-
-        // Fill gaps if needed, or just use what we have. 
-        // For visual consistency, let's proxy "requests/activity" based on users if real logs are empty
-        if (userTrend.length === 0 && range !== 'all') {
-             // Fallback for demo if no users registered in last X days
-             history.push({ name: 'Today', users: totalUsers, requests: 50, compliance: 10 });
-        } else {
-            userTrend.forEach(item => {
-                history.push({
-                    name: item._id,
-                    users: item.users, // Cumulative would be better for "Growth", but daily is "Acquisition"
-                    requests: Math.floor(Math.random() * 50) + 10, // Placeholder until RequestLog model exists
-                    compliance: Math.floor(Math.random() * 10)
-                });
-            });
+        // Merge trends into a single time series
+        const dateData = {};
+        
+        // Initialize all dates in range with zero values
+        for (let i = 0; i <= days; i++) {
+            const date = new Date(startDate);
+            date.setDate(date.getDate() + i);
+            const dateStr = date.toISOString().split('T')[0];
+            dateData[dateStr] = { name: dateStr, users: 0, requests: 0, compliance: 0 };
         }
+
+        userTrend.forEach(item => { if (dateData[item._id]) dateData[item._id].users = item.count; });
+        chatTrend.forEach(item => { if (dateData[item._id]) dateData[item._id].requests = item.count; });
+        complianceTrend.forEach(item => { if (dateData[item._id]) dateData[item._id].compliance = item.count; });
+
+        const history = Object.values(dateData).sort((a, b) => a.name.localeCompare(b.name));
 
         res.json({
             overview: {
@@ -250,9 +246,9 @@ router.get('/stats', adminAuth, async (req, res) => {
                 complianceCount,
                 caseBuilderCount
             },
-            history: history.length > 0 ? history : [{ name: 'No Data', users: 0, requests: 0, compliance: 0 }],
+            history: history,
             distributions: {
-                docs: docCategories,
+                docs: docCategories.length > 0 ? docCategories : [{ name: 'Uncategorized', value: totalDocs }],
                 features: [
                     { name: 'Legal Chat', value: totalChats },
                     { name: 'Compliance Checks', value: complianceCount },
@@ -261,8 +257,8 @@ router.get('/stats', adminAuth, async (req, res) => {
             }
         });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Analytics Error:', err);
+        res.status(500).json({ message: 'Server Error', details: err.message });
     }
 });
 
