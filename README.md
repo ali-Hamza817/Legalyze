@@ -1,128 +1,86 @@
 # Legalyze: An Agentic Retrieval-Augmented Generation Framework for Reducing Legal Research and Drafting Latency in Pakistani Jurisdictions
 
-Legalyze is a sovereign, multi-tier agentic framework designed to automate specialized legal research and drafting within the Pakistani judicial system. By leveraging **Structure-Aware Hierarchical Indexing (SAHI)** and **Multi-Modal Hybrid Retrieval (MongoDB + Pinecone)**, the system reduces research latency from hours to minutes while maintaining 100% jurisdictional grounding.
+**Legalyze** is a state-of-the-art, sovereign agentic framework designed to transform the judicial workflow within Pakistani jurisdictions. By bridging the gap between raw statutory data and actionable legal intelligence, Legalyze reduces the "Research-Drafting Latency" from hours of manual labor to mere minutes of verified AI synthesis.
 
-## 🏛️ System Architecture
+---
 
-### 1. Multi-Tier Framework (SOA)
-The system is built on a Service-Oriented Architecture (SOA) consisting of five decoupled layers:
-- **Client Tier:** React + Vite (Case Buildup Wizard, Chat UI)
-- **ESB Tier:** Asynchronous Request Routing & API Gateway
-- **Auth Tier:** JWT-based RBAC & Data Sovereignty
-- **Intelligent Services:** Agentic Brain (GPT-4o), SAHI Indexer, Constitutional Engine
-- **Resource Tier:** MongoDB, Pinecone, AWS S3
+## 🏛️ System Overview
+Legalyze utilizes a **Service-Oriented Architecture (SOA)** to ensure that judicial data stays sovereign and secure. The system is designed around a multi-tier logic:
 
-```mermaid
-graph TD
-    User((Legal Professional)) --> UI[React/Vite Frontend]
-    UI --> Auth[Auth & Security Tier]
-    Auth --> ESB[Enterprise Service Bus]
-    ESB --> Agent[Intelligent Agent Service]
-    ESB --> Compliance[Constitutional Compliance Engine]
-    
-    Agent --> Hybrid[Hybrid Retrieval Logic]
-    Hybrid --> Lexical[MongoDB Lexical Index]
-    Hybrid --> Neural[Pinecone Vector Store]
-    
-    Agent --> Synthesis[Synthesis & Drafting Engine]
-    Synthesis --> S3[AWS S3 Document Storage]
-```
+- **Frontend Ecosystem:** A premium React + Vite interface tailored for legal professionals, featuring high-fidelity animations and a dedicated "Case Buildup" environment.
+- **Agentic Orchestration Layer:** Driven by GPT-4o, this layer acts as the system's "brain," deconstructing complex legal queries into manageable statutory sub-tasks.
+- **Hybrid Persistence Layer:** A synchronized dual-database strategy using **MongoDB** for lexical precision (keywords/statutes) and **Pinecone** for semantic depth (intent/similarity).
 
-### 2. Agentic RAG Data Pipeline
-The core intelligence layer utilizes a dual-discovery stream with Reciprocal Rank Fusion (RRF).
+---
 
-```mermaid
-graph TD
-    A[Raw Legal Statutes] --> B(SAHI Indexing)
-    B --> C{Asynchronous Dispatch}
-    C -->|Metadata| D[MongoDB]
-    C -->|Embeddings| E[Pinecone]
-    
-    F[Query] --> G{Dual Stream}
-    G -->|Lexical| D
-    G -->|Semantic| E
-    
-    D --> H(RRF Fusion)
-    E --> H
-    
-    H --> I[Agentic Brain]
-    I --> J[Grounded Synthesis]
-```
+## ✨ Advanced Product Features
 
-## 🚀 Getting Started
+### 🧙‍♂️ Adaptive Case Buildup Wizard
+The core of the Legalyze experience. Instead of static forms, the Wizard uses an iterative AI dialogue to guide lawyers through the drafting process:
+- **Fact-to-Statute Mapping:** Automatically identifies which sections of the PPC (Pakistan Penal Code) or CrPC apply to the user's narrative.
+- **Temporal Analysis:** Automatically constructs a chronological timeline of events based on uploaded documents.
+- **Dynamic Draft Generation:** Synthesizes a formal legal petition grounded in verified citations.
+
+### ⚖️ Constitutional Compliance Engine
+A novel governance layer that acts as an automated "Reviewing Officer":
+- **Article-to-Fact Auditing:** Cross-references the facts of a case against the 1973 Constitution of Pakistan.
+- **Violation Flagging:** Automatically identifies potential breaches of fundamental rights (e.g., Article 10-A, Article 25).
+- **Loophole Discovery:** Highlights procedural gaps that could lead to case dismissal, suggesting corrective measures.
+
+### 🔍 Structure-Aware Hierarchical Indexing (SAHI)
+Unlike generic RAG systems that "break" legal context, our SAHI strategy:
+- **Preserves Hierarchy:** Indexes case law and statutes by their logical structure (Part > Chapter > Section > Article).
+- **Contextual Anchoring:** Ensures that the AI always understands the "Breadcrumb Path" of a legal citation, eliminating jurisdictional drift.
+
+### 📊 Deep Metadata Extraction
+Automatically extracts high-level legal intelligence from unstructured documents:
+- **Party Identification:** Distinguishes between Petitioner, Respondent, and relevant witnesses.
+- **Forum Validation:** Recommends the correct judicial tier (High Court vs. District Court) based on jurisdictional rules.
+
+---
+
+## 🚀 Getting Started (Clone-to-Run)
 
 ### Prerequisites
-- Node.js (v18+)
-- MongoDB (Local or Atlas)
-- Pinecone API Key
-- OpenAI API Key
+- **Node.js** (v18 or higher)
+- **Database:** MongoDB (Local or Atlas)
+- **Vector Store:** Pinecone Account
+- **LLM:** OpenAI API Key (GPT-4o recommend)
 
-### 1. Installation & Setup
+### 1. Installation
 
-**Clone the Repository:**
+**Clone the repository:**
 ```bash
 git clone https://github.com/CyberHamza/Legalyzing.git
 cd Legalyze-FullStack
 ```
 
-**Backend Configuration:**
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Create a `.env` file from the template:
-   ```bash
-   # .env Template
-   PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   OPENAI_API_KEY=your_openai_key
-   PINECONE_API_KEY=your_pinecone_key
-   PINECONE_ENVIRONMENT=your_pinecone_env
-   AWS_ACCESS_KEY_ID=your_aws_key
-   AWS_SECRET_ACCESS_KEY=your_aws_secret
-   S3_BUCKET_NAME=your_bucket
-   ```
-
-**Frontend Configuration:**
-1. Navigate to the frontend directory:
-   ```bash
-   cd ../Legalyzing
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Update `src/config.js` or `.env` with your Backend API URL.
-
-### 2. Running the Project
-
-**Start Backend (Dev Mode):**
+**Step 1: Backend Setup**
 ```bash
 cd backend
+npm install
+# Create a .env file and add your keys (MONGODB_URI, OPENAI_API_KEY, PINECONE_API_KEY, etc.)
 npm run dev
 ```
 
-**Start Frontend:**
+**Step 2: Frontend Setup**
 ```bash
 cd ../Legalyzing
+npm install
+# Ensure src/config.js points to http://localhost:5000
 npm run dev
 ```
 
-The application will be accessible at `http://localhost:5173`.
-
-## ⚖️ Features
-- **Case Buildup Wizard:** Interactive step-by-step drafting for petitions.
-- **Constitutional Compliance:** Automatic Article-to-Fact violation detection.
-- **Hybrid Search:** Combines legal citations (lexical) with case intent (semantic).
-- **Deep Metadata Extraction:** Automated identification of court tiers and timelines.
-
-## 📑 Acknowledgments
-Developed at the **Military College of Signals (MCS), National University of Sciences and Technology (NUST)**, Pakistan. 
+### 2. Accessing the Platform
+The platform will launch at `http://localhost:5173`. Sign in with your administrator credentials to access the Dashboard and the Case Buildup Wizard.
 
 ---
-*Note: This repository contains the framework code. Legal statutes and private case data are managed via the sovereign local indexing service.*
+
+## 📑 Acknowledgments
+Project developed and researched at the **Military College of Signals (MCS), National University of Signals and Technology (NUST)**, Rawalpindi, Pakistan.
+
+> [!IMPORTANT]
+> This repository contains the framework orchestration and UI. Statutory repositories (Constitution, PPC, CrPC) are processed locally via the SAHI Indexer to ensure data sovereignty.
+
+---
+© 2026 Legalyze Team | Sovereign AI for Pakistani Law
