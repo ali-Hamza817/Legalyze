@@ -15,16 +15,14 @@ Legalyzing/.env
 *.tex
 *.pdf
 *.txt
+*.png
 brain/
 .gemini/
 scripts/
-presentation_content.md
-product_demo_visuals.md
-submission_strategy.md
-research_paper_outline.md
-anonymous_manuscript.md
-submission_ready_manuscript.tex
-rag_workflow_proposal.md
+
+# Documentation (Only README allowed)
+*.md
+!README.md
 
 # OS Files
 .DS_Store
