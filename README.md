@@ -16,9 +16,15 @@ Transforming judicial workflows in Pakistan through intelligent document analysi
 
 Watch the complete walkthrough of the **Legalyze Platform** demonstrating all core features:
 
-[**▶️ Click here to watch the Product Demo Video**](https://github.com/ali-Hamza817/Legalyze/releases)
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=ofoQ3na1cRE">
+    <img src="https://img.youtube.com/vi/ofoQ3na1cRE/maxresdefault.jpg" alt="Legalyze Product Demo" width="640" height="360">
+  </a>
+</div>
 
-*The demo video is available in the GitHub Releases section of this repository. Download or stream the "Product Demo Legalyze (Male Voiceover)" video to see Case Buildup Wizard, Constitutional Compliance Engine, and Agentic RAG capabilities in action.*
+**Watch the demo video above** to see the Case Buildup Wizard, Constitutional Compliance Engine, and Agentic RAG capabilities in action. Click the thumbnail to play on YouTube or use the embedded player below:
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/ofoQ3na1cRE" title="Legalyze Product Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 

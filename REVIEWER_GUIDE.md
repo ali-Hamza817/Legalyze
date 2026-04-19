@@ -161,10 +161,14 @@ docker-compose up --build
 5. **Admin Dashboard** - System monitoring and settings
 
 ### Video Demo
-- Watch: [Product Demo Legalyze (Male Voiceover)](https://github.com/ali-Hamza817/Legalyze/releases)
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/ofoQ3na1cRE" title="Legalyze Product Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+**Direct link:** [Product Demo Legalyze on YouTube](https://www.youtube.com/watch?v=ofoQ3na1cRE)
+
 - Duration: ~15 minutes
 - Shows entire system in action
-- **Available in GitHub Releases** — Click the link above to download or stream
+- **Watch directly above** — No need to leave the page!
 
 ---
 
