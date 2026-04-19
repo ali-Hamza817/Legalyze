@@ -1,6 +1,6 @@
 # 🏛️ Legalyze : An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18.x-blue.svg)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
@@ -261,7 +261,13 @@ Legalyze/
 
 ## 📄 License
 
-MIT License - See [LICENSE](LICENSE)
+**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**
+
+This work is licensed under CC BY-NC 4.0. You are free to share, adapt, and build upon the material for **non-commercial purposes** with proper attribution.
+
+**Commercial use requires explicit written permission.** [See LICENSE file](LICENSE) for full details.
+
+For commercial licensing inquiries: cyberhamza8.17@gmail.com
 
 ---
 
@@ -300,5 +306,5 @@ For research inquiries, collaboration opportunities, or questions about implemen
 ---
 
 © 2026 Legalyze Contributors | National University of Sciences and Technology (NUST), Islamabad, Pakistan  
-**Status**: Production Ready | **Version**: 1.0.0 | **License**: MIT  
+**Status**: Production Ready | **Version**: 1.0.0 | **License**: CC BY-NC 4.0  
 **Last Updated**: April 19, 2026

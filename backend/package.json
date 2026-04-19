@@ -14,8 +14,8 @@
     "mongodb",
     "express"
   ],
-  "author": "Legalyze Team",
-  "license": "MIT",
+  "author": "Ali Hamza",
+  "license": "CC-BY-NC-4.0",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.940.0",
     "@aws-sdk/s3-request-presigner": "^3.940.0",

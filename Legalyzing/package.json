@@ -1,8 +1,10 @@
 {
   "name": "legalyze-frontend",
   "description": "Legalyze Frontend - An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
+  "license": "CC-BY-NC-4.0",
+  "author": "Ali Hamza",
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
