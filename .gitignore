@@ -12,17 +12,14 @@ Legalyzing/.env
 *.log
 
 # Research & Manuscripts (Protected)
-*.tex
-*.pdf
-*.txt
-*.png
 brain/
 .gemini/
 scripts/
 
-# Documentation (Only README allowed)
-*.md
-!README.md
+# Documentation (Allow important docs)
+# Only block local research papers and temporary notes
+maunscript.tex
+research_paper/
 
 # OS Files
 .DS_Store
