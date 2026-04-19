@@ -24,8 +24,6 @@ Watch the complete walkthrough of the **Legalyze Platform** demonstrating all co
 
 **Watch the demo video above** to see the Case Buildup Wizard, Constitutional Compliance Engine, and Agentic RAG capabilities in action. Click the thumbnail to play on YouTube or use the embedded player below:
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/ofoQ3na1cRE" title="Legalyze Product Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
 ## 📖 What is Legalyze?
@@ -794,25 +792,6 @@ We welcome contributions! To contribute code, documentation, or improvements:
 - **Test Coverage:** 85%+
 - **Docker Build Time:** ~5 minutes
 - **Production Ready:** ✅ Yes
-
----
-
-## 🎯 Roadmap & Future Features
-
-### Q2 2024 ✅
-- ✅ Complete Docker containerization
-- ✅ Deploy to GitHub as open-source
-- ✅ Write comprehensive documentation
-
-### Q3 2024 🔄
-- 🔄 Multi-language support (Urdu, English)
-- 🔄 Advanced case law precedent matching
-- 🔄 Integration with Pakistani courts e-filing system
-
-### Q4 2024 🔲
-- 🔲 Mobile app (React Native)
-- 🔲 Blockchain-based document verification
-- 🔲 AI-powered client advisory system
 
 ---
 
