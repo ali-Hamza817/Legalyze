@@ -29,13 +29,15 @@ npm install
 Create a `.env` file in the backend directory:
 
 ```env
-MONGODB_URI=mongodb+srv://alihamzaminhas21_db_user:3sT763l7KU3o390M@legalyze-cluster.jexzcyf.mongodb.net/legalyze?retryWrites=true&w=majority
-JWT_SECRET=legalyze_super_secure_jwt_secret_key_2024_production_grade_security_12345
+MONGODB_URI=mongodb+srv://your_username:your_password@legalyze-cluster.yourinstance.mongodb.net/legalyze?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key_make_it_long_and_random
 JWT_EXPIRE=7d
 PORT=5000
 NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 ```
+
+> ⚠️ **SECURITY**: Never commit real credentials. Use `.env.example` as a template and always use environment-specific credentials.
 
 ## Running the Server
 

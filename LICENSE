@@ -1,0 +1,86 @@
+MIT License
+
+Copyright (c) 2024-2026 Legalyze Contributors, National University of Sciences and Technology (NUST), Islamabad, Pakistan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Research & Attribution
+
+This project was developed as a Master's thesis at the National University of Sciences and Technology (NUST), Islamabad, Pakistan.
+
+### Citation
+
+If you use Legalyze in your research, please cite as follows:
+
+```bibtex
+@thesis{legalyze2026,
+  title     = {Bridging the Judicial Backlog in Pakistan through Agentic Retrieval-Augmented Generation for Automated Judicial Decision Support},
+  author    = {Ali Hamza},
+  school    = {National University of Sciences and Technology (NUST), Islamabad, Pakistan},
+  year      = {2026},
+  url       = {https://github.com/ali-Hamza817/Legalyze}
+}
+```
+
+### Related Work
+
+This implementation builds upon research in:
+- Retrieval-Augmented Generation (RAG) systems
+- Multi-Agent AI systems and orchestration
+- Legal NLP and domain-specific language models
+- Constitutional compliance automation
+- Document processing and metadata extraction
+
+### Publications & Presentations
+
+Details about publications, presentations, or conference submissions related to this project will be updated here.
+
+---
+
+## Commercial Use & Licensing
+
+This software is provided under the MIT License for research, educational, and commercial use. 
+
+For inquiries about:
+- Commercial licensing
+- Research collaborations
+- Custom implementations
+- Integration support
+
+Please reach out through GitHub issues or discussions.
+
+---
+
+## Warranty Disclaimer
+
+This software is provided "as is" without warranty of any kind. Users are responsible for:
+- Thorough testing in their environment before production use
+- Ensuring compliance with applicable laws and regulations
+- Maintaining data privacy and security
+- Regular backups and disaster recovery planning
+
+**Note**: While this system has been designed with security in mind, users must conduct security audits appropriate to their deployment context.
+
+---
+
+**© 2024-2026 Legalyze Contributors**  
+**Developed at NUST, Islamabad, Pakistan**  
+**License**: MIT
