@@ -5,8 +5,6 @@
 [![React](https://img.shields.io/badge/React-18.x-blue.svg)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 
-**An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence**
-
 Transforming judicial workflows in Pakistan through intelligent document analysis, constitutional compliance automation, and AI-powered legal research.
 
 ---
