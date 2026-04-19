@@ -1,5 +1,6 @@
 {
-  "name": "legal-document-system",
+  "name": "legalyze-frontend",
+  "description": "Legalyze Frontend - An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence",
   "private": true,
   "version": "0.0.0",
   "type": "module",

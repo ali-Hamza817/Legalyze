@@ -1,4 +1,4 @@
-# 🏛️ Legalyze - Agentic AI for Pakistani Legal System
+# 🏛️ Legalyze
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
@@ -6,7 +6,9 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT-brightgreen.svg)](https://github.com/ali-Hamza817/Legalyze)
 
-**A sovereign agentic AI framework transforming judicial workflows in Pakistan through intelligent Retrieval-Augmented Generation (RAG) and constitutional compliance automation.**
+## An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
+
+**Transforming judicial workflows in Pakistan through intelligent Retrieval-Augmented Generation and constitutional compliance automation.**
 
 ---
 
@@ -23,7 +25,7 @@
 
 ## 🎯 What is Legalyze?
 
-**Legalyze** is a research-grade AI system that automates legal work for Pakistani courts by:
+**Legalyze** is an open-source, structure-aware agentic RAG platform that automates legal research for Pakistani courts with high-precision legal intelligence. It works by:
 
 - ✅ **Reducing research time** from hours to minutes
 - ✅ **Checking constitutional compliance** automatically

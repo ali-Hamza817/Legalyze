@@ -1,4 +1,5 @@
-# Frontend Dockerfile - React + Vite
+# Legalyze Frontend - An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
+# Frontend React + Vite Dockerfile
 # Build stage
 FROM node:18-alpine AS builder
 

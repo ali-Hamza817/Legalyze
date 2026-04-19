@@ -1,4 +1,6 @@
-# Supporting Documentation
+# Supporting Documentation - Legalyze
+
+## An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
 
 This folder contains legal documents and statutory resources that support the Legalyze research and implementation.
 

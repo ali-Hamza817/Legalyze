@@ -1,6 +1,8 @@
-# System Documentation – Legal AI Platform (Legalyze / ELAW Firm)
+# System Documentation – Legalyze Platform
 
-## 1. Introduction
+## An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
+
+### 1. Introduction
 
 ### 1.1 Purpose of the Document
 This document provides a comprehensive technical and functional overview of the Legalyze platform. It serves as a single source of truth for understanding the system's architecture, intelligence layer, and operational workflows.

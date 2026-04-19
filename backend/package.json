@@ -1,7 +1,7 @@
 {
   "name": "legalyze-backend",
   "version": "1.0.0",
-  "description": "Secure authentication backend for Legalyzing application",
+  "description": "Legalyze Backend - An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

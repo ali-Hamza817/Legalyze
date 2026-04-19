@@ -1,5 +1,8 @@
 version: '3.8'
 
+# Legalyze: An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
+# Docker Compose Orchestration Configuration
+
 services:
   # Backend API Service
   backend:
