@@ -1,4 +1,4 @@
-# 🏛️ Legalyze
+# 🏛️ Legalyze : An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
