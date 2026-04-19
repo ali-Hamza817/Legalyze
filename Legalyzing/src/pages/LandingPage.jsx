@@ -888,7 +888,7 @@ const LandingPage = () => {
                     {/* Contact Info Cards */}
                     <Grid container spacing={3} sx={{ mb: 6 }}>
                         {[
-                            { icon: <Place />, title: 'Visit Us', info: ['Military College of Signals', 'Rawalpindi, Pakistan'] },
+                            { icon: <Place />, title: 'Visit Us', info: ['National University of Sciences and Technology (NUST)', 'Islamabad, Pakistan'] },
                             { icon: <Phone />, title: 'Call Us', info: ['+92 (300) 123-4567', '+92 (333) 987-6543'] },
                             { icon: <Mail />, title: 'Email Us', info: ['info@legalyzing.com', 'support@legalyzing.com'] },
                             { icon: <AccessTime />, title: 'Working Hours', info: ['Mon - Fri: 9:00 AM - 6:00 PM', '24/7 Emergency Support'] }
@@ -950,7 +950,7 @@ const LandingPage = () => {
                             <Card className="glass" sx={{ p: 0, overflow: 'hidden', height: '100%' }}>
                                 <Box sx={{ height: '100%', minHeight: 400 }}>
                                     <iframe
-                                        title="Military College of Signals Location"
+                                        title="NUST, Islamabad Location"
                                         width="100%"
                                         height="100%"
                                         style={{ border: 0 }}

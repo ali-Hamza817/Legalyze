@@ -16,10 +16,18 @@ brain/
 .gemini/
 scripts/
 
-# Documentation (Allow important docs)
-# Only block local research papers and temporary notes
-maunscript.tex
-research_paper/
+# Implementation Details (Not needed in production repo)
+COMPREHENSIVE_ARCHITECTURE_ANALYSIS.md
+ARCHITECTURE_DIAGRAMS_AND_FLOWS.md
+IVORYSAND_IMPLEMENTATION.md
+README_DOCKER.md
+DEPLOYMENT_SUMMARY.md
+expert*.pdf
+Gemini_Generated_Image*.png
+
+# Test Files
+test-detention-order.txt
+backend/temp/*
 
 # OS Files
 .DS_Store

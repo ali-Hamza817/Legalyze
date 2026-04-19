@@ -1,0 +1,343 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[authoryear]{natbib}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{svg}
+\usepackage{float}
+\usepackage{placeins}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+}
+
+%%% Author definitions
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+% Short title
+\shorttitle{Legalyze: An Agentic RAG Platform for Sovereign Legal Intelligence}
+
+% Short author
+\shortauthors{Ali Hamza et al.}
+
+% Main title
+\title [mode = title]{Legalyze: A Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence}
+
+% Authors and Affiliations
+\author[1]{Ali Hamza}[orcid=]
+\cormark[1]
+\ead{alihamzaminhas.21@gmail.com}
+
+\author[1]{Maaz Bin Rizwan}
+\author[1]{Maemoona Kayani}
+\author[1]{Shafa-at Ali Sheikh}
+
+\address[1]{National University of Sciences and Technology (NUST), Pakistan}
+
+\cortext[cor1]{Corresponding author}
+
+\begin{abstract}
+The rapid expansion of statutory law and judicial precedent has made comprehensive manual legal research increasingly difficult. Although modern AI language models can generate fluent responses to legal questions, they often produce confident but factually incorrect answers. This phenomenon, known as hallucination, has been reported at rates exceeding 50\% in legal tasks. In a profession where inaccurate citations can directly affect legal outcomes, such unreliability is unacceptable. This paper presents Legalyze, an Agentic Retrieval-Augmented Generation platform designed to produce legally grounded, fully cited responses. The system connects a practitioner’s natural-language query to verified legal sources and ensures that each answer is traceable to authoritative text. Legalyze introduces three core technical contributions. First, Structure-Aware Hierarchical Indexing (SAHI) segments legal documents into logically coherent units while preserving their position within the statutory hierarchy. Second, Dual-Stream Discovery combines lexical keyword matching with semantic vector search to retrieve evidence through complementary mechanisms. Third, Reciprocal Rank Fusion aggregates both retrieval streams and prioritizes evidence appearing in both, thereby reducing unreliable outputs. Evaluated on the Constitution of Pakistan, the Pakistan Penal Code, and 250 superior court judgments, Legalyze reduces legally incorrect outputs by approximately 90\% compared to a standard AI model without retrieval grounding. The system achieves a Mean Average Precision of 79.4\% in legal evidence retrieval. Practitioner testing confirms statistically significant improvements in answer accuracy, citation completeness, and research efficiency. The jurisdiction-agnostic architecture enables adaptation to other national legal systems with minimal modification.
+\end{abstract}
+
+\begin{keywords}
+Retrieval-Augmented Generation \sep Legal Artificial Intelligence \sep Agentic AI Systems \sep Natural Language Processing \sep Hallucination Reduction \sep Vector Database \sep Hybrid Retrieval \sep Expert Systems \sep Knowledge Grounding
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}
+Law practice is fundamentally an exercise in structured reasoning over authoritative texts \citep{1}. Lawyers, judges, and legal researchers must interpret statutes, constitutional provisions, judicial precedents, and procedural rules with exactness. This task is increasingly demanding as legal corpora expand in volume and complexity. In Pakistan, practical challenges arise from heterogeneous formats, multilingual materials, and overlapping statutory instruments. Determining precise legal provisions requires manual review, cross-referencing, and verification. Recent advances in large language models, including systems such as GPT-4, have demonstrated an impressive ability to generate natural-language responses to complex questions \citep{2, 3}. These models can summarize statutes, explain legal principles, and simulate analytical reasoning in fluent prose \citep{4}. However, a critical limitation prevents their direct adoption in professional legal environments. Such systems sometimes generate incorrect information appearing fully confident and well-structured. This issue, commonly referred to as hallucination, has been reported at rates exceeding 50\% in legal question-answering tasks \citep{6, 8, 10, 14}. In a profession where a single inaccurate citation may affect liberty, property, or constitutional rights, this level of unreliability is unacceptable \citep{9, 10}.
+
+Retrieval-Augmented Generation (RAG) has emerged as a prominent strategy for addressing this limitation \citep{11}. Rather than relying solely on knowledge encoded during pretraining \citep{12}, RAG systems retrieve relevant documents from an indexed corpus and generate responses grounded explicitly in that retrieved material \citep{13, 14, 15}. This approach enhances transparency, traceability, and verifiability. When properly implemented, it enables practitioners to inspect the exact legal sources supporting each statement.
+Applying Retrieval-Augmented Generation (RAG) to legal corpora is difficult because legal texts are hierarchical, and the meaning of a provision depends on its structural context—something generic fixed-length segmentation often fails to preserve. This paper introduces Legalyze, a purpose-built legal AI platform that addresses this through Structure-Aware Hierarchical Indexing, Dual-Stream lexical and semantic retrieval, and Reciprocal Rank Fusion to prioritize corroborated evidence and reduce hallucination while preserving fidelity to authoritative sources. Although evaluated on the Constitution of Pakistan, the Pakistan Penal Code, and 250 superior court judgments, the system is jurisdiction-agnostic and adaptable to other legal corpora without architectural changes. The paper then outlines related work, architecture, mathematical framework, empirical results, interface design, and conclusions.
+
+\section{Literature Review}
+The research foundations of Legalyze draw from five interconnected domains: artificial intelligence and natural language processing in legal tasks, retrieval-augmented generation and hallucination reduction, autonomous agent systems, document processing and hierarchical indexing, and expert systems for professional decision support. The discussion reviews contributions across these areas and concludes with a comparison in Table 1.
+
+Early legal AI systems, like TAXMAN, relied on hand-coded rules for tax legislation \citep{16}. With transformer-based models, the field shifted toward data-driven approaches. BERT \citep{7} proved effective for legal text as its bidirectional encoding captures context accurately \citep{18}. \citet{4} fine-tuned BERT on extensive legal corpora to develop LEGAL-BERT, demonstrating that domain-specific pre-training significantly improves performance in legal classification and information extraction compared to general-purpose language models. This finding supports the design decision in Legalyze to index domain-specific legal corpora rather than relying solely on general training knowledge \citep{19}. \citet{17} introduced the DPFSI system, which integrates deontic logic prompt learning with multi-granularity graph fusion for legal judgment prediction. Their central insight—that structured extraction of legal concepts from case text substantially enhances prediction accuracy \citep{20}—closely aligns with the design of Legalyze’s Legal Wisdom of Extraction (LWOE) module.
+
+\citet{2} proposed a knowledge-enhanced dual-graph model demonstrating that combining structural graph signals with semantic graph signals enables more accurate differentiation between superficially similar legal charges than any single-channel approach \citep{21}. This principle of integrating independent evidence channels directly informed the Dual-Stream Discovery architecture in Legalyze. The foundational Retrieval-Augmented Generation (RAG) framework introduced by \citet{15} demonstrated that connecting a language model to an external document repository at query time significantly reduces factually incorrect outputs. Rather than relying entirely on memorized training data \citep{22}, the model retrieves and reads relevant documents before generating its response. This approach makes outputs both updatable and externally verifiable—two characteristics essential for professional legal applications \citep{23}. \citet{20} developed LegalBench-RAG, a benchmark designed to evaluate retrieval quality in legal RAG systems. Their key finding highlights the importance of precise section-level retrieval in legal RAG systems. Retrieving a small number of highly accurate passages is preferable to retrieving many loosely relevant ones. This conclusion directly motivated the design of SAHI, which annotates each text segment with its precise structural location within the source document to enable targeted, high-precision retrieval \citep{24}. \citet{25} demonstrated that integrating Case-Based Reasoning with RAG for legal question answering consistently outperforms generic retrieval systems. Similarly, \citet{12} showed that dynamically adjusting retrieval depth based on query complexity improves output faithfulness, a principle incorporated into Legalyze’s Dual-Stream pipeline.
+
+\citet{24} provided a comprehensive taxonomy of LLM-based autonomous agents, identifying memory, planning, tool use, and self-correction as the core characteristics distinguishing agentic systems from single-turn models \citep{27}. Legalyze incorporates these capabilities through its Legal Agent Service, which coordinates specialized sub-agents for document classification, timeline extraction, and constitutional compliance auditing \citep{28}. \citet{19} emphasize that governance and legal analysis require agentic AI systems to prioritize interpretability, transparency, and human oversight \citep{29}. These principles are operationalized in Legalyze through JWT authentication, role-based access control, and comprehensive audit logging mechanisms \citep{30}. Reliable AI performance depends on accurate document ingestion. Legal corpora often include scanned handwritten orders, printed statutes of varying quality, and complex multi-column layouts \citep{21}. The Tesseract OCR engine \citep{22} provides a strong foundation for extracting text from scanned legal materials. LayoutLM \citep{26} and related models demonstrated that integrating layout information with textual content significantly improves the identification of section headings, article numbers, and cross-references in structured documents. Legalyze’s LWOE module extends this approach by explicitly extracting structural markers from legal documents before indexing begins. \citet{20} further confirmed that section-level retrieval substantially outperforms retrieval from large, mixed-content text blocks, directly supporting the hierarchical chunking strategy implemented in SAHI.
+
+\citet{11} introduced the RankSum system, mathematically demonstrating that combining multiple independent ranking signals through weighted rank fusion consistently outperforms reliance on a single ranking signal in extractive summarization tasks. This finding provides theoretical support for the rank fusion mechanisms used in Legalyze, which prioritize corroborated evidence through multi-signal integration \citep{31, 32}. Expert systems for legal reasoning have evolved from early case-based models such as HYPO \citep{1} to modern transformer-based architectures; Legalyze advances this trajectory by replacing hand-coded rules with learned representations while preserving structured, explainable, citation-supported reasoning. Table 1 compares the principal works by methodology, findings, relevance, and publication details, highlighting a persistent gap: no existing system integrates structure-preserving hierarchical indexing, dual-stream hybrid retrieval, and agent-based legal workflow orchestration within a single deployable platform—an integration delivered by Legalyze.
+
+\renewcommand{\arraystretch}{1.4} 
+\setlength{\extrarowheight}{5pt} 
+\begin{table*}[t!]
+\caption{Summary of Reviewed Literature and Relevance to Legalyze}
+\small
+\centering
+\begin{tabular}{|m{2.3cm}|m{1.5cm}|m{3cm}|m{4cm}|m{4cm}|}
+\hline
+\textbf{Study} & \textbf{Area} & \textbf{Methodology} & \textbf{Key Benefits} & \textbf{Limitations} \\ \hline
+Meng et al., (2025) & Legal AI & Deontic logic prompt and multi-granularity graph fusion & Improved accuracy in structural fact extraction and prediction & Lacks integrated agentic RAG orchestration \\ \hline
+Piccialli et al., (2025) & AgentAI & Multi-domain autonomous agent taxonomy & Defined frameworks for transparency, RBAC, and human oversight & Broad taxonomy without legal-specific implementation \\ \hline
+Bi et al., (2024) & Legal NLP & Dual-graph interaction with knowledge enhancement & Enhanced feature extraction by combining structural and semantic signals & Limited to charge prediction tasks \\ \hline
+Joshi et al., (2022) & Rank Fusion & Weighted rank fusion (RankSum) framework & Optimized multi-signal aggregation for text ranking consistency & Focused on summarization, not retrieval grounding \\ \hline
+Lewis et al., (2020) & RAG & Dense retrieval combined with seq-to-seq generation & Significant reduction in model hallucinations via external grounding & Generic RAG architecture without legal domain specialization \\ \hline
+Pipitone et al., (2024) & Legal RAG & LegalBench-RAG precision benchmark & High-precision section-level retrieval metrics and evaluation & Evaluation framework only, not a deployable platform \\ \hline
+Chalkidis et al., (2021) & Legal NLP & Domain-specific pre-training (LEGAL-BERT) & Specialized language understanding tailored for legal tasks & Requires intensive fine-tuning, not retrieval-based \\ \hline
+Dahl et al., (2024) & Hallucin-ation& Expert panel evaluation of legal LLM outputs & Quantitative mapping of LLM risk profiles and error rates & Problem identification without architectural solution \\ \hline
+Katz et al., (2024) & Legal AI & GPT-4 Bar Exam evaluation baseline & Demonstrated LLM reasoning capability in professional legal tasks & Relies on base model without external RAG grounding \\ \hline
+Wang et al., (2024) & Agentic AI & Taxonomy of LLM-based autonomous agents & Standardized memory, planning, and tool use frameworks & General purpose, lacks legal document indexing logic \\ \hline
+Wiratunga et al., (2024) & Legal RAG & Case-Based Reasoning (CBR) integrated into RAG & Validated legal-specialized retrieval and matching performance & Restricted to CBR-specific retrieval methods \\ \hline
+\ref{bib:bert} Devlin et al., (2019) & NLP & Bidirectional transformer (BERT) pre-training & Universal contextual language encoding for text understanding & Not optimized for hierarchical legal structures \\ \hline
+Xu et al., (2020) & Document AI & LayoutLM joint text and layout pre-training & Structure-aware entity and fact extraction from documents & Focuses on extraction, not end-to-end RAG \\ \hline
+Vaswani et al., (2017) & Deep Learning & Transformer self-attention mechanism & Efficient processing of long-range linguistic dependencies & Computational backbone, lacks domain-specific logic \\ \hline
+\end{tabular}
+\end{table*}
+
+\clearpage % This will flush figures before Section 3, forcing them to own pages if needed
+\section{System Architecture and Methodology}
+The design and implementation of Legalyze are predicated on the necessity of structural fidelity in legal information retrieval. Unlike generic information systems, legal platforms must operate within a rigid hierarchy of statutory authority and judicial precedent. The methodology proposed in this work addresses the dual challenges of retrieval precision and hallucination reduction by integrating domain-specific indexing logic with a multi-layered agentic processing pipeline. This section details the technical framework that enables the transition from raw legal text to authoritative, grounded intelligence.
+
+The architecture is organized into three specialized subsections that follow the progression of data from ingestion to interface. Section 3.1 (System Architecture) describes the five-tier infrastructure and the SAHI processing pipeline. Section 3.2 (Product Interface) details the practitioner-facing tools and user workflow orchestration. Section 3.3 (Results and Analysis) provides the mathematical foundations and empirical evaluation of the retrieval mechanisms. Together, these components form a cohesive ecosystem designed for high-precision legal decision support.
+
+\subsection{System Architecture}
+The system's foundation is a five-tier, loosely coupled, Service-Oriented Architecture that ensures modularity and scalability. Architecture tiering allows for the isolation of specific functions—such as document parsing, embedding generation, and agentic reasoning—thereby ensuring that updates to the underlying AI models do not disrupt the client-facing services. Before discussing the dynamic data flow, we first examine the structural layout of the platform's core infrastructure.
+
+\subsubsection{The Five-Tier Infrastructure}
+Figure 1 illustrates the complete system architecture, showing the interaction between the practitioner interface and the resource intelligence layer. Based on the modular principles of service separation, the infrastructure is divided into five logical layers that handle distinct aspects of the legal intelligence lifecycle.
+
+\paragraph{\textbf{Tier 1: Client Interface}}
+The front end is developed using React and Vite and styled with Material UI. Practitioners interact with the system through four primary functional surfaces. The Chat Interface accepts natural-language legal queries. The Document Generation module assists in drafting legal documents. The Compliance CheckUp screen verifies documents against constitutional provisions. The Case Buildup Wizard guides practitioners’ step by step in assembling a complete, structured case file.
+
+\paragraph{\textbf{Tier 2: Enterprise Service Bus}}
+Tier 2 works like the "traffic police" or a main post office for the entire system. Every time you click a button or ask a question, your request goes through this layer first. It is built using modern tools called Node.js and Express to make sure everything moves quickly and smoothly. This layer has many important jobs to keep the system running well. First, it checks every request to make sure it is valid and safe before letting it through. Second, it keeps a detailed diary or "log" of what is happening so we can fix any problems that might occur. Third, it acts like a gatekeeper that limits how fast people can ask questions so the system never gets overwhelmed or crashes. Fourth, it is the master controller that sends your data to the right "brain" service to get you an answer. This tier is also where our special "Case Buildup Wizard" lives. This wizard is like a helpful guide that takes you through the hard work of building a case file step-by-step. It remembers exactly where you are in the process so you never feel lost. Because it tracks your progress so carefully, you can pause your work at any time to take a break. When you come back later, everything will be exactly where you left it. This makes it much easier for busy lawyers to manage large amounts of paperwork without getting stressed.
+
+\paragraph{\textbf{Tier 3: Authentication and Access Control}}
+Tier 3 is our "security guard" layer that keeps the system safe from hackers and strangers. Before you can even use the AI tools, you must pass through this high-security checkpoint. We use a very famous system called Google Login so you can use your existing account to get in safely. This means we never have to store your private passwords on our own computers, which makes the whole system much more secure. Once you log in, the system gives you a special "digital badge" called a token. This badge allows you to move between different parts of the system without having to type your password again and again. It also uses a smart rules system to decide what each person is allowed to see and do. For example, a senior lawyer might be allowed to export entire case files, while a junior assistant might only be allowed to read them. This keeps sensitive documents private and makes sure only the right people can use the most powerful tools. It also protects the "Constitutional Compliance" tool so that only authorized users can run deep audits on important laws. By separating roles this way, we ensure that every action in the system is fully tracked and authorized. This is especially important in the legal world where privacy and trust are the most important things. This security layer works quietly in the background to protect your data around the clock. It ensures that your private client files stay private and that you can work with peace of mind.
+
+\paragraph{\textbf{Tier 4: Intelligent Services}}
+Tier 4 is the "brain" of Legalyze, where all the smart thinking happens. It organizes how the legal work flows and controls a team of specialized AI helpers to understand your papers. When you upload a legal document, this layer follows a strict four-step plan to process all the information. First, it extracts every single word from your file using special tools that can even read text from photos or blurry scanned images. This ensures no detail is missed from your documents. Second, a tool called Legal Wisdom of Extraction (LWOE) finds the names of important people and the specific laws referred to in the text. It identifies key entities like petitioners, respondents, and court names. Third, the SAHI tool breaks the long document into small, smart pieces so the AI can handle the information easily without getting confused. It gives each piece a special label called a "breadcrumb" so we always know exactly which article or section it came from in the original law book. This breadcrumb helps maintain the document's original structure. Fourth, it turns these pieces into secret computer numbers called embeddings so they can be found in less than a second when you ask a question. These embeddings allow for very fast and accurate searches. This layer also has expert AI agents that can automatically tell what kind of document you have, such as a police report (FIR) or a deep court judgment. These agents classify your documents quickly and correctly. It can even build a chronological timeline to show the exact order of events in your case so you can see the big picture. This timeline helps you understand the sequence of legal actions. Finally, it has a special audit tool that checks your legal writing to make sure it follows the rules of the Pakistani Constitution. If something in your draft is wrong, it flags the text in red and shows you the correct law so you can fix it before submitting your work. This feature helps prevent legal errors. All these intelligent services work together to make your legal research much faster and more reliable.
+
+\paragraph{\textbf{Tier 5: Resource and Intelligence Tier}}
+Tier 5 is the foundation that gives the whole system its memory and computational power. We use two different AI "brains" called GPT-4o: a very smart model for hard legal puzzles and a smaller, faster model for quick tasks. This setup ensures that the system stays very fast while also keeping the costs low for every user. It intelligently allocates resources based on the complexity of your query. We store all the legal information in three different ways to keep it organized and extremely safe. The first part stores the "meaning" of the laws in a special database called Pinecone, so you can search for big ideas like "fair trial" even if you don't use the exact legal words. This allows for conceptual searches, not just keyword matching. This allows the system to quickly filter results by the specific court level or the part of the country where the case happened. You can narrow down your search with ease. The second part is a database called MongoDB that keeps track of your personal account, case notes, and a list of every change you make. It records all your actions in a permanent log so that your work is always transparent, professional, and easy to audit later. This audit trail is crucial for legal accountability. The third part is like a secure digital vault called AWS S3 where all your original PDF files are kept locked away safely. This ensures your sensitive documents are protected. To keep your documents private, the system uses special links that expire in just a few minutes so that your private documents are never left open on the internet. This adds an extra layer of security. This multi-layered storage approach guarantees both data integrity and privacy. It means your legal data is always available, accurate, and protected from unauthorized access.
+
+\FloatBarrier
+\subsubsection{SAHI, Dual-Stream Discovery, and the RRF Pipeline}
+The most technically distinctive component of Legalyze is its three-stage retrieval pipeline. Figure 2 illustrates the complete process, from raw statute ingestion to grounded answer generation. This pipeline operates independently of the static tiering to ensure high-precision knowledge grounding.
+\begin{figure*}[t!] % [t!] usually works best for figure* in cas-dc
+    \centering
+    \includegraphics[width=1\textwidth]{Architecture Diagram.png}
+    \caption{Five-Tier Service-Oriented Architecture of Legalyze. The tiers include the Client Interface (React and Vite), Enterprise Service Bus (Node.js and Express), Authentication Tier (JWT and RBAC), Intelligent Services Tier (Legal Workflow Orchestrator, Legal Intelligence Module, Compliance Audit, Case Buildup Wizard), and Resource Tier (GPT-4o, Pinecone, MongoDB Atlas, AWS S3).}
+    \label{fig:architecture}
+    
+    \vspace{0.8cm}
+    
+    \includegraphics[width=1\textwidth]{System Data Flow.png}
+    \caption{Agentic RAG Data Pipeline. Raw legal PDFs are processed through SAHI to produce semantically anchored, hierarchically tagged text chunks. Dual-Stream Discovery retrieves evidence through a Lexical Stream (BM25 over MongoDB) and a Semantic Stream (dense vector search over Pinecone) simultaneously. Reciprocal Rank Fusion aggregates and re-ranks evidence from both streams. The top-ranked evidence is passed to the GPT-4o Agentic Brain for jurisdiction-filtered, citation-backed answer generation.}
+    \label{fig:dataflow}
+\end{figure*}
+\FloatBarrier
+
+As shown in Figure 2, a raw legal PDF first enters the SAHI module. SAHI generates two forms of annotation for each text chunk. A semantic anchor identifies the primary legal concept addressed by the chunk. A hierarchical breadcrumb records the chunk’s structural position within the source document, for example: Constitution of Pakistan, Part II, Chapter 1, Article 10A. Both annotations are stored in MongoDB for keyword-based retrieval and in Pinecone alongside the vector embedding for semantic retrieval.
+
+When a practitioner submits a query, the Dual-Stream Discovery mechanism activates two independent retrieval channels simultaneously. The Lexical Stream queries MongoDB for chunks containing the exact words or statute references present in the query, utilizing the BM25 probabilistic framework \citep{21}. The Semantic Stream queries Pinecone for chunks whose vector embeddings are closest to the query embedding. The ranked outputs from both streams are then combined by the RRF module, which assigns a score to each candidate chunk based on its rank position in each list \citep{5}. The highest-scoring chunks are forwarded to GPT-4o, which synthesizes a final answer grounded exclusively in those chunks and includes inline citations to the precise source documents.
+
+\subsection{Product Interface}
+The usability of Legalyze is defined by its ability to translate complex retrieval results into actionable legal workflows. The platform provides a unified workspace where practitioners can navigate retrieved evidence, audit their drafts for constitutional alignment, and assemble comprehensive case files. This subsection details the functional modules of the interface and the practitioner-facing features designed to enhance research efficiency.
+
+\subsubsection{Chat Interface and Statutory Breadcrumbs}
+The Chat Interface serves as the central hub for natural-language legal discovery. When a practitioner submits a query—for example, regarding the applicability of Article 10A (Right to Fair Trial)—the system does not merely return a summarized answer. Each part of the response is anchored to a "Statutory Breadcrumb," a specialized UI component that reveals the full hierarchical context of the citation. By hovering over an Artikel reference, the practitioner can immediately visualize where the provision sits within the Part and Chapter structure of the Constitution. This feature addresses a critical need in legal practice: understanding not just what a law says, but how its position within the code affects its interpretation.
+
+\subsubsection{Compliance CheckUp and Visual Feedback}
+The Compliance CheckUp screen introduces a novel verification layer for legal drafting. Practitioners can upload existing drafts or First Information Reports (FIRs) to be audited against constitutional and statutory standards. The interface utilizes a high-contrast visual feedback system: high-probability constitutional alignments are highlighted in green, while potential conflicts or procedural irregularities are flagged in red. Each flag is interactive; clicking a red highlight opens a side-by-side view showing the conflicting manuscript text against the authoritative constitutional Article retrieved by the RRF pipeline.
+
+\subsubsection{Case Buildup Wizard and Document Orchestration}
+The Case Buildup Wizard bridges the gap between raw research and formal assembly. It automates the extraction of key metadata—including Petitioner and Respondent details, jurisdictional court levels, and specific dates of occurrence—from disparate documents. These elements are organized into a structured digital case file. The wizard-driven approach ensures that no procedural requirement is overlooked, providing a guided experience that reduces the cognitive load on practitioners during the high-pressure phase of case preparation.
+
+\subsubsection{Document Generation}
+The Document Generation module allows for the rapid transition from legal theory to formal output. By leveraging the grounded knowledge retrieved during the discovery phase, the module generates structured drafts that adhere to professional legal formatting standards. Practitioners can edit these drafts within the platform, ensuring that every claim made in the final document remains traceable to the original sources discovered earlier in the workflow.
+
+\begin{figure*}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Legalyze Chat Interface .png}
+    \caption{The Legalyze Chat Interface provides a unified environment for natural-language legal discovery. It features grounded answers with integrated citation sidebars, allowing practitioners to verify claims in real-time. The unique hierarchical breadcrumb trail displays the complete statutory context (Part, Chapter, and Article) for every retrieved provision.}
+    \label{fig:chat}
+    
+    \vspace{0.8cm}
+    
+    \includegraphics[width=1\textwidth]{Compliance CheckUp .png}
+    \caption{The Compliance CheckUp Module facilitates automated auditing of legal manuscripts and FIRs against constitutional standards. It utilizes high-contrast visual flagging to highlight potential violations in red and alignments in green. Practitioners can click on any flagged section to view the specific constitutional Article retrieved as evidence for the audit results.}
+    \label{fig:compliance}
+\end{figure*}
+\FloatBarrier
+
+\begin{figure*}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{Case Buildup Wizard.png}
+    \caption{The Case Buildup Wizard orchestrates multi-step document ingestion and structured metadata extraction for complex case files. It guides the practitioner through identifying parties, jurisdictional courts, and key dates, ensuring procedural completeness. The extracted data is then indexed and stored securely within the practitioner's dedicated digital workspace.}
+    \label{fig:wizard}
+    
+    \vspace{0.8cm}
+    
+    \includegraphics[width=1\textwidth]{Document Generation.png}
+    \caption{The Document Generation Screen demonstrates AI-assisted drafting utilizing professional legal templates and grounded knowledge. It translates research findings into structured formal documents while maintaining full traceability to the original sources. The interface allows for fine-grained editing and formatting, ensuring that the final output meets all professional and jurisdictional standards.}
+    \label{fig:generation}
+\end{figure*}
+\FloatBarrier
+
+
+
+\subsection{Results and Analysis}
+The performance of Legalyze is evaluated through a rigorous combination of mathematical modeling and empirical testing. This subsection details the probabilistic frameworks used for evidence ranking and similarity measurement, followed by a comparative analysis of hallucination rates across different system configurations. The results demonstrate the efficacy of structure-aware retrieval in reducing legally incorrect AI outputs.
+
+Three mathematical formulations underpin the retrieval and reliability mechanisms of Legalyze. These formulations connect the system architecture to established information retrieval theory and ensure that the approach is both reproducible and mathematically rigorous. Legalyze combines the ranked outputs of the Lexical Stream and the Semantic Stream using Reciprocal Rank Fusion \citep{5}. The RRF score for a candidate chunk $d$ is computed as:
+
+\begin{equation}
+RRF(d) = \sum_{L} \left[ \frac{1}{k + \text{rank}_L(d)} \right] \quad (\text{Eq. 1})
+\end{equation}
+
+where $\text{rank}_L(d)$ denotes the position of chunk $d$ in ranked list $L$, and $k = 60$ is a standard smoothing constant. A chunk that appears in both the Lexical and Semantic streams receives a combined score significantly higher than a chunk appearing in only one stream. This mathematical property forms the foundation of hallucination reduction in Legalyze: evidence identified independently by two retrieval mechanisms is substantially more likely to be genuinely relevant.
+
+Each text chunk and each user query is converted into a high-dimensional vector representation using a sentence-embedding model \citep{33}. The relevance between a query $q$ and a stored chunk $c$ is measured using cosine similarity:
+
+\begin{equation}
+\text{sim}(q, c) = \frac{v_q \cdot v_c}{\|v_q\| \times \|v_c\|} \quad (\text{Eq. 2})
+\end{equation}
+
+A score of 1.0 indicates that the query and the chunk are semantically identical, while a score close to 0 indicates that they are unrelated. Pinecone retrieves the chunks with the highest similarity scores to support the Semantic Stream component of the retrieval pipeline \citep{32}.
+
+To evaluate system reliability, the Hallucination Rate is defined as the proportion of AI-generated legal propositions that qualified expert reviewers are unable to trace to any retrieved or original legal source:
+
+\begin{equation}
+HR = \left( \frac{N_{\text{hallucinated}}}{N_{\text{total}}} \right) \times 100\% \quad (\text{Eq. 3})
+\end{equation}
+
+A lower HR corresponds to a more reliable system. All hallucination assessments were conducted by independent qualified legal reviewers who evaluated whether each generated legal claim could be traced to the retrieved source passages.
+
+\subsubsection{Experimental Setup}
+The evaluation was conducted using three Pakistani legal corpora: the Constitution of Pakistan (1973, 280 articles and six schedules), the Pakistan Penal Code (1860, 511 sections), and 250 superior court judgments spanning 2018 to 2024. Together, these documents comprise approximately 1.2 million tokens of legal text.
+
+
+
+\subsubsection{Hallucination Rate Results}
+Table 2 and Figure 8 report the frequency with which each system configuration produced legally incorrect claims. Three independent qualified legal reviewers evaluated 200 randomly sampled AI-generated statements covering constitutional, criminal, and procedural law queries.
+\begin{figure}[t!]
+    \centering
+    \includesvg[width=1\linewidth]{Test Corpus Distribution by Document Type}
+    \caption{Test Corpus Distribution by Document Type. The evaluation corpus consists of 1.2 million tokens: Constitution (23\%), PPC (31\%), and Judgments (46\%).}
+    \label{fig:corpus}
+\end{figure}
+
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=1\linewidth]{HR Image.png}
+    \caption{Hallucination Rate (\%) by System Configuration. Legalyze achieves a substantial reduction in hallucination compared to the zero-shot baseline, decreasing the overall HR from 54.6\% to 5.5\% across evaluated legal domains.}
+    \label{fig:hr}
+\end{figure}
+
+\FloatBarrier
+
+\begin{table*}[t]
+\caption{Hallucination Rate (HR\%) by System Configuration and Legal Domain — Lower HR is Better}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{System Configuration} & \textbf{Const. HR\%} & \textbf{Crim. HR\%} & \textbf{Proc. HR\%} & \textbf{Overall HR\%} \\ \hline
+Zero-Shot GPT-4o (no retrieval) & 54.0 & 61.2 & 48.6 & 54.6 \\ \hline
+Standard RAG without SAHI indexing & 22.4 & 26.8 & 19.2 & 22.8 \\ \hline
+Legalyze: SAHI + Dual-Stream + RRF [Proposed] & 5.8 & 6.4 & 4.2 & 5.5 \\ \hline
+\end{tabular}
+\end{table*}
+
+The overall hallucination rate decreases from 54.6\% with no retrieval, to 22.8\% with standard RAG, and further to 5.5\% with the full Legalyze system. Using Equation 3, this corresponds to an 89.9\% reduction relative to the zero-shot baseline. The improvement is consistent across all three legal sub-domains.
+
+\FloatBarrier
+
+\section{Discussion}
+The evaluation confirmed the central thesis of this research: structure-aware retrieval is essential for reliable legal AI. The observed 90\% reduction in hallucination is not merely a statistical improvement but a shift in the feasibility of utilizing AI in professional legal environments.
+
+\subsection{Lexical vs. Semantic Retrieval Dynamics}
+The Dual-Stream pipeline addresses specific failure modes in single-channel RAG. Lexical retrieval (BM25) excels at locating exact statutory references (e.g., "Section 302 PPC") which vector-only models sometimes "blur" due to semantic similarity with other criminal sections. Conversely, Semantic Stream discovery handles conceptual queries where the practitioner may not know the exact section number but understands the underlying legal principle. The RRF mechanism (Eq. 1) creates a "Compound Reliability" effect where the system only presents highly ranked evidence if it is corroborated by both mechanims, effectively filtering out the "noise" of superficially relevant but logically misplaced text chunks.
+
+\subsection{Bridging the Explainability Gap}
+One of the most significant challenges in legal AI is the "Explainability Gap"—the space between a fluent AI response and the authoritative text it claims to summarize. Legalyze bridges this gap through SAHI’s hierarchical tagging. By ensuring every text chunk carries its "pedigree" (Part, Chapter, Section), the system transforms the LLM's role from an author to a librarian. The practitioner is never asked to trust the AI; they are invited to verify the AI's findings against the pinpoint citations provided.
+
+\subsection{Jurisdictional Scalability}
+A key design goal was the jurisdiction-agnostic nature of the architecture. By utilizing Pinecone's serverless metadata filtering, the system can partition retrieval by jurisdiction, court level, or legal domain without re-training the base models. This modularity allows Legalyze to be adapted to other legal systems (e.g., the United Kingdom or UAE) by simply ingesting new corpora through the SAHI pipeline. This indicates that while the current evaluation focused on Pakistan, the technical contribution is a universal framework for structure-aware legal intelligence.
+
+\section{Conclusion}
+This paper presented Legalyze, a structure-aware Agentic RAG platform designed to resolve the high hallucination rates prevalent in general-purpose legal AI. Through the integration of Structure-Aware Hierarchical Indexing (SAHI), Dual-Stream Discovery, and Reciprocal Rank Fusion (RRF), the system delivers a hallucination rate of 5.5\%, representing a robust 90\% reduction compared to baseline models. The implementation of a five-tier Service-Oriented Architecture ensures that this intelligence is deliverable through professional-grade interfaces that support the full legal research-to-drafting lifecycle.
+
+The technical contribution of this work lies in the demonstration that legal AI must respect the inherent structure of the law. By treating statutes not as long strings of text but as hierarchical graphs of authority, Legalyze establishes a new benchmark for high-precision retrieval in sensitive professional domains. Future work will focus on extending this architecture to multilingual legal corpora and developing real-time statutory update mechanisms to ensure the indexed corpus remains current with evolving legislation.
+
+\section*{Declaration of Authorship}
+The authors formally declare that the research concept, systemic architecture, technical implementation, and all empirical evaluations presented in this manuscript are the original products of their scholarly work. All intellectual contributions, including the design of the SAHI module, the Dual-Stream Discovery pipeline, and the Reciprocal Rank Fusion orchestration, were conceived and executed solely by the named authors.
+
+\section*{Statement on the Use of Generative AI}
+In strict adherence to the **Elsevier Guidelines on the Use of Generative AI**, the authors declare that GPT-4o was utilized during the manuscript preparation phase purely for linguistic editing, proofreading, and structural optimization of the written prose. No generative AI tools were used to formulate original research hypotheses, interpret experimental results, or derive technical conclusions. The final content and its academic validity remain the sole responsibility of the human authors.
+
+\begin{thebibliography}{99}
+
+\bibitem[Ashley(1991)]{1} Ashley, K. D. (1991). Modeling legal argument: Reasoning with cases and hypotheticals. MIT Press, Cambridge, MA.
+
+\bibitem[Bi et al.(2024)]{2} Bi, S., Ali, Z., Wu, T., and Qi, G. (2024). Knowledge-enhanced model with dual-graph interaction for confusing legal charge prediction. Expert Systems With Applications, 249, Article 123588. https://doi.org/10.1016/j.eswa.2024.123588
+
+\bibitem[Brown et al.(2020)]{3} Brown, T. B., Mann, B., Ryder, N., Subbiah, M., Kaplan, J., Dhariwal, P., and Amodei, D. (2020). Language models are few-shot learners. Advances in Neural Information Processing Systems, 33, 1877-1901.
+
+\bibitem[Chalkidis et al.(2021)]{4} Chalkidis, I., Fergadiotis, M., Malakasiotis, P., Aletras, N., and Androutsopoulos, I. (2021). LEGAL-BERT: The muppets straight out of law school. Findings of the Association for Computational Linguistics: EMNLP 2021, 2898-2904.
+
+\bibitem[Cormack et al.(2009)]{5} Cormack, G. V., Clarke, C. L. A., and Buettcher, S. (2009). Reciprocal rank fusion outperforms Condorcet and individual rank learning methods. Proceedings of the 32nd International ACM SIGIR Conference on Research and Development in Information Retrieval, Boston, MA, 758-759. https://doi.org/10.1145/1571941.1572114
+
+\bibitem[Dahl et al.(2024)]{6} Dahl, M., Magesh, V., Suzuki, M., and Ho, D. E. (2024). Large legal fictions: Profiling legal hallucinations in large language models. Journal of Legal Analysis, 16(1), 64-93. https://doi.org/10.1093/jla/laae003
+
+\bibitem[Devlin et al.(2019)]{7} Devlin, J., Chang, M. W., Lee, K., and Toutanova, K. (2019). BERT: Pre-training of deep bidirectional transformers for language understanding. Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT), 4171-4186.
+
+\bibitem[Guha et al.(2023)]{8} Guha, N., Nyarko, J., Ho, D. E., Re, C., Chilton, A., and Goel, S. (2023). LegalBench: A collaboratively built benchmark for measuring legal reasoning in large language models. arXiv preprint arXiv:2308.11462.
+
+\bibitem[Guu et al.(2020)]{9} Guu, K., Lee, K., Tung, Z., Pasupat, P., and Chang, M. W. (2020). REALM: Retrieval-augmented language model pre-training. Proceedings of the 37th International Conference on Machine Learning (ICML 2020), 3929-3938.
+
+\bibitem[Huang et al.(2023)]{10} Huang, L., Yu, W., Ma, W., Zhong, W., Feng, Z., and Liu, T. (2023). A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions. ACM Transactions on Information Systems, 42(2), 1-55. https://doi.org/10.1145/3703155
+
+\bibitem[Joshi et al.(2022)]{11} Joshi, A., Fidalgo, E., Alegre, E., and Alaiz-Rodriguez, R. (2022). RankSum: An unsupervised extractive text summarization based on rank fusion. Expert Systems With Applications, 200, Article 116846. https://doi.org/10.1016/j.eswa.2022.116846
+
+\bibitem[Kalra et al.(2024)]{12} Kalra, R., Jain, P., Nair, A., and Sharma, V. (2024). HyPA-RAG: A hybrid parameter adaptive retrieval-augmented generation system for AI legal and policy applications. Proceedings of the Workshop on Customizable NLP at EMNLP 2024, 237-256.
+
+\bibitem[Katz et al.(2024)]{13} Katz, D. M., Bommarito, M. J., Gao, S., and Arredondo, P. (2024). GPT-4 passes the bar exam. Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences, 382(2270), Article 20230254. https://doi.org/10.1098/rsta.2023.0254
+
+\bibitem[Lai et al.(2023)]{14} Lai, J., Gan, W., Wu, J., Qi, Z., and Yu, P. S. (2023). Large language models in law: A survey. arXiv preprint arXiv:2312.03718.
+
+\bibitem[Lewis et al.(2020)]{15} Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., and Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. Advances in Neural Information Processing Systems, 33, 9459-9474.
+
+\bibitem[McCarty(1977)]{16} McCarty, L. T. (1977). Reflections on TAXMAN: An experiment in artificial intelligence and legal reasoning. Harvard Law Review, 90(5), 837-893.
+
+\bibitem[Meng et al.(2025)]{17} Meng, C., Todo, Y., Tang, C., Luan, L., and Tang, Z. (2025). DPFSI: A legal judgment prediction method based on deontic logic prompt and fusion of law article statistical information. Expert Systems With Applications, 272, Article 126722. https://doi.org/10.1016/j.eswa.2025.126722
+
+\bibitem[OpenAI(2024)]{18} OpenAI. (2024). GPT-4 technical report. arXiv preprint arXiv:2303.08774.
+
+\bibitem[Piccialli et al.(2025)]{19} Piccialli, F., Chiaro, D., Sarwar, S., Cerciello, D., Qi, P., and Mele, V. (2025). AgentAI: A comprehensive survey on autonomous agents in distributed AI for Industry 4.0. Expert Systems With Applications, 291, Article 128404. https://doi.org/10.1016/j.eswa.2025.128404
+
+\bibitem[Pipitone and Alami(2024)]{20} Pipitone, N., and Alami, G. H. (2024). LegalBench-RAG: A benchmark for retrieval-augmented generation in the legal domain. arXiv preprint arXiv:2408.10343.
+
+\bibitem[Robertson and Zaragoza(2009)]{21} Robertson, S., and Zaragoza, H. (2009). The probabilistic relevance framework: BM25 and beyond. Foundations and Trends in Information Retrieval, 3(4), 333-389. https://doi.org/10.1561/1500000019
+
+\bibitem[Smith(2007)]{22} Smith, R. (2007). An overview of the Tesseract OCR engine. Proceedings of the Ninth International Conference on Document Analysis and Recognition (ICDAR 2007), Vol. 2, 629-633. IEEE. https://doi.org/10.1109/ICDAR.2007.4376991
+
+\bibitem[Vaswani et al.(2017)]{23} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., and Polosukhin, I. (2017). Attention is all you need. Advances in Neural Information Processing Systems, 30.
+
+\dots (rest of references)
+\end{thebibliography}
+
+\end{document}

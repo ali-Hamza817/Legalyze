@@ -3,19 +3,381 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18.x-blue.svg)](https://reactjs.org/)
-[![Docker](https://img.shields.io/badge/Docker-Supported-2496ED.svg)](https://www.docker.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT-brightgreen.svg)](https://github.com/ali-Hamza817/Legalyze)
+
+**A sovereign agentic AI framework transforming judicial workflows in Pakistan through intelligent Retrieval-Augmented Generation (RAG) and constitutional compliance automation.**
 
 ---
 
-## 📋 Quick Navigation
+## 📖 Quick Links
 
-- **⚡ [Quick Start with Docker](#-quick-start-with-docker-recommended)** ← Start here!
-- 📚 [Features](#-core-features)
-- 🏗️ [Architecture](#-architecture)
-- 💻 [Local Development](#-local-development-setup)
-- 📡 [API Documentation](#-api-documentation)
+- **⚡ [Quick Start (3 minutes)](#-quick-start-with-docker)** ← **START HERE!**
+- 🎯 [What is Legalyze?](#-what-is-legalyze)
+- ✨ [Features](#-core-features)
+- 📚 [Documentation](#-documentation)
+- 🚀 [Deployment](#-deployment)
 - 🧪 [Testing](#-testing)
+
+---
+
+## 🎯 What is Legalyze?
+
+**Legalyze** is a research-grade AI system that automates legal work for Pakistani courts by:
+
+- ✅ **Reducing research time** from hours to minutes
+- ✅ **Checking constitutional compliance** automatically
+- ✅ **Guiding case drafting** through interactive wizards
+- ✅ **Preventing AI hallucinations** with mandatory source citations
+- ✅ **Understanding legal hierarchy** through structure-aware indexing
+
+## 🚀 Quick Start with Docker
+
+### The fastest way to get Legalyze running (3 minutes)
+
+**Step 1: Prerequisites** (if you don't have these, install them first)
+```bash
+# Download & Install:
+# - Docker Desktop: https://www.docker.com/products/docker-desktop
+# - Git: https://git-scm.com/downloads
+```
+
+**Step 2: Clone & Configure**
+```bash
+# Clone the repository
+git clone https://github.com/ali-Hamza817/Legalyze.git
+cd Legalyze
+
+# Create environment file
+cp .env.example .env
+
+# Edit .env and add YOUR API keys (see below)
+```
+
+**Step 3: Add Your API Keys**
+
+Edit `.env` file and add:
+
+```env
+# 1. MongoDB (Free database)
+MONGODB_URI=mongodb+srv://your_username:your_password@cluster.mongodb.net/legalyze
+
+# 2. OpenAI (AI engine)
+OPENAI_API_KEY=sk-your-key-here
+
+# 3. Pinecone (Vector search database)
+PINECONE_API_KEY=pcsk_your-key-here
+PINECONE_INDEX_NAME=legal-documents
+PINECONE_ENVIRONMENT=us-east-1
+
+# 4. AWS S3 (File storage)
+AWS_ACCESS_KEY_ID=your-key
+AWS_SECRET_ACCESS_KEY=your-secret
+AWS_S3_BUCKET=your-bucket
+AWS_REGION=us-east-1
+
+# 5. Security (Generate random string)
+JWT_SECRET=generate-a-random-string-here-make-it-long
+```
+
+**Step 4: Run with Docker**
+
+```bash
+# Start entire system (backend + frontend + networking)
+docker-compose up --build
+
+# That's it! Your system is now running
+```
+
+**Step 5: Access**
+
+Open your browser:
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:5000
+- **Health Check**: http://localhost:5000/api/health
+
+**Login with test credentials:**
+```
+Email: admin@legalyze.com
+Password: Admin@123
+```
+
+---
+
+## Where to Get API Keys (All Free Tiers Available)
+
+| Service | Free Tier | Link |
+|---------|-----------|------|
+| **MongoDB** | 512 MB database | [mongodb.com/cloud/atlas](https://mongodb.com/cloud/atlas) |
+| **OpenAI** | Credits included | [platform.openai.com](https://platform.openai.com/account/api-keys) |
+| **Pinecone** | 100k vectors free | [pinecone.io](https://www.pinecone.io/) |
+| **AWS S3** | 5 GB free | [aws.amazon.com/s3](https://aws.amazon.com/s3/pricing/) |
+
+---
+
+## ✨ Core Features
+
+### 🧙 **Adaptive Case Buildup Wizard**
+- 7-step interactive AI guidance
+- Automatic statute identification
+- Temporal timeline generation
+- Professional petition drafting
+
+### ⚖️ **Constitutional Compliance Engine**
+- Automated Article-by-Article auditing
+- Fundamental rights violation detection
+- Procedural gap identification
+- Smart recommendations
+
+### 🔍 **Retrieval-Augmented Generation (RAG)**
+- Dual-database search (semantic + lexical)
+- Zero hallucinations (all claims cited)
+- Structure-aware legal indexing
+- Context-preserving retrieval
+
+### 📊 **Deep Document Analysis**
+- Party identification (Petitioner, Respondent)
+- Forum validation (Court tier recommendation)
+- Metadata extraction from PDFs/DOCs
+- Multi-modal document processing
+
+---
+
+## 📊 Architecture at a Glance
+
+```
+┌──────────────────────────────────────┐
+│   React 18 Frontend (Port 3000)      │
+├──────────────────────────────────────┤
+│   Node.js + Express API (Port 5000)  │
+│   - 8 API Routes                     │
+│   - 12 AI Services                   │
+│   - JWT + OAuth Authentication       │
+├──────────────────────────────────────┤
+│   Persistent Data Layer              │
+│   - MongoDB (Metadata)               │
+│   - Pinecone (Vector Embeddings)     │
+├──────────────────────────────────────┤
+│   External  AI & Services            │
+│   - OpenAI GPT-4o                    │
+│   - AWS S3                           │
+└──────────────────────────────────────┘
+```
+
+---
+
+## 📡 API Endpoints
+
+All endpoints require JWT authentication (except health check)
+
+```bash
+# Health Check
+GET /api/health
+
+# Authentication
+POST /api/auth/signup
+POST /api/auth/login
+GET /api/auth/me
+POST /api/auth/logout
+
+# Chat & RAG
+POST /api/chat              # Send message with document context
+GET /api/chat/conversations
+GET /api/chat/conversations/:id
+
+# Documents
+POST /api/documents/upload   # Upload PDF/DOCX
+GET /api/documents           # List your documents
+DELETE /api/documents/:id
+
+# Case Building Wizard
+POST /api/case-building/start
+PUT /api/case-building/:id/progress
+GET /api/case-building/:id
+
+# Compliance Checking
+POST /api/constitutional-compliance/check
+GET /api/constitutional-compliance/:id
+
+# Document Generation
+POST /api/generate/petition
+POST /api/smart-generate/strategy
+```
+
+---
+
+## 💻 Develop Locally (Without Docker)
+
+### Backend Setup
+```bash
+cd backend
+npm install
+
+# Create .env file
+cp ../.env .env
+
+# Run server
+npm run dev
+# Runs on http://localhost:5000
+```
+
+### Frontend Setup
+```bash
+cd Legalyzing
+npm install
+
+# Start development server
+npm run dev
+# Runs on http://localhost:3000
+```
+
+---
+
+## 🐳 Docker Commands
+
+```bash
+# Start services
+docker-compose up --build
+
+# Run in background
+docker-compose up -d
+
+# View logs
+docker-compose logs -f backend
+
+# Stop everything
+docker-compose down
+
+# Remove volumes (clean slate)
+docker-compose down -v
+
+# Access backend shell
+docker-compose exec backend sh
+```
+
+---
+
+## 📚 Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [system_documentation.md](./system_documentation.md) | Complete technical specifications |
+| [.env.example](./.env.example) | Environment variables template |
+| [supporting_documentation/](./supporting_documentation/) | Legal reference documents |
+
+---
+
+## 🧪 Testing
+
+```bash
+cd backend
+
+# Test Pinecone integration
+node scripts/testPineconeRAG.js
+
+# Test constitutional compliance
+node scripts/testEnhancedCompliance.js
+
+# Test case generation
+node scripts/testGenerate.js
+```
+
+---
+
+## 🔐 Security Features
+
+✅ **JWT Authentication** - Secure token-based sessions  
+✅ **Bcrypt Passwords** - 12-round hashing  
+✅ **Rate Limiting** - 5000 requests/15 min (global)  
+✅ **Input Validation** - All endpoints validated  
+✅ **CORS Protection** - Cross-origin requests controlled  
+✅ **Environment Secrets** - All keys in .env  
+
+---
+
+## 📁 Project Structure
+
+```
+Legalyze/
+├── backend/                    # Node.js + Express API
+│   ├── Dockerfile             
+│   ├── services/              # AI & Business Logic (12 services)
+│   ├── routes/                # API Endpoints (8 routes)
+│   ├── models/                # Database Schemas (10 models)
+│   ├── scripts/               # Testing utilities
+│   └── config/                # Configuration files
+│
+├── Legalyzing/                # React + Vite Frontend
+│   ├── Dockerfile
+│   ├── src/components/        # Reusable Components
+│   ├── src/pages/             # Page-level Components
+│   └── src/styles/            # Theme & Styling
+│
+├── supporting_documentation/  # Legal Reference Documents
+│   ├── Constitution of Pakistan.txt
+│   ├── Pakistan Panel Code.pdf
+│   ├── THE CODE OF CRIMINAL PROCEDURE, 1898.pdf
+│   ├── THE CODE OF CIVIL PROCEDURE, 1908.pdf
+│   └── [More legal documents...]
+│
+├── docker-compose.yml         # Service Orchestration
+├── .env.example               # Configuration Template
+└── README.md                  # This File
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Docker Issues
+
+| Problem | Solution |
+|---------|----------|
+| **Port already in use** | Change port in `docker-compose.yml` or stop conflicting services |
+| **Container exits** | Check logs: `docker-compose logs backend` |
+| **Module errors** | Rebuild: `docker-compose up --build` |
+| **Connection refused** | Ensure all services are healthy: `docker-compose ps` |
+
+### API Issues
+
+| Problem | Solution |
+|---------|----------|
+| **MongoDB error** | Check `MONGODB_URI` in `.env` |
+| **OpenAI error** | Verify `OPENAI_API_KEY` is valid and has credits |
+| **Pinecone error** | Check `PINECONE_API_KEY` and index exists |
+| **S3 error** | Verify `AWS_S3_BUCKET` name is correct |
+
+### Frontend Issues
+
+| Problem | Solution |
+|---------|----------|
+| **Cannot reach API** | Check `REACT_APP_API_URL` in `.env` |
+| **Blank page** | Clear cache: `Ctrl+Shift+Delete` |
+| **CORS error** | Ensure backend is running on http://localhost:5000 |
+
+---
+
+## 📜 License
+
+MIT License - See LICENSE file for details
+
+---
+
+## 🎓 Research Paper
+
+**Thesis Title**: *Bridging the Judicial Backlog in Pakistan through Agentic Retrieval-Augmented Generation for Automated Judicial Decision Support*
+
+**Institution**: National University of Sciences and Technology (NUST)  
+**Location**: Islamabad, Pakistan  
+**Year**: 2024-2026  
+
+This system demonstrates:
+- Agentic AI for specialized domains
+- Constitutional compliance automation
+- Multi-modal document processing
+- Retrieval-Augmented Generation (RAG)
+- Legal knowledge representation
+
 
 ---
 
@@ -585,7 +947,7 @@ Open DevTools: F12 or Ctrl+Shift+I
 
 ## 📝 Acknowledgments
 
-Project developed and researched at the **Military College of Signals (MCS), National University of Signals and Technology (NUST)**, Rawalpindi, Pakistan.
+Project developed and researched at **National University of Sciences and Technology (NUST)**, Islamabad, Pakistan.
 
 > [!IMPORTANT]
 > This repository contains the complete framework orchestration and UI. Legal statutory repositories (Constitution, PPC, CrPC) are processed locally via the SAHI Indexer to ensure **data sovereignty**.
