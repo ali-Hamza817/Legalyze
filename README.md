@@ -470,38 +470,6 @@ REACT_APP_API_URL=http://localhost:5000
 
 ---
 
-## ✨ Core Features
-
-### 🧙‍♂️ Adaptive Case Buildup Wizard
-- **Iterative AI Dialogue**: Step-by-step case preparation guided by AI
-- **Fact-to-Statute Mapping**: Auto-identifies which PPC/CrPC sections apply
-- **Temporal Analysis**: Automatically builds chronological timelines from documents
-- **Dynamic Petition Generation**: Creates formal legal documents with verified citations
-
-### ⚖️ Constitutional Compliance Engine
-- **Article-by-Article Auditing**: Cross-references facts vs. 1973 Constitution
-- **Violation Detection**: Automatically flags fundamental rights breaches
-- **Loophole Discovery**: Identifies procedural gaps that could cause dismissal
-- **Intelligent Recommendations**: Suggests corrective legal strategies
-
-### 🔍 Structure-Aware Hierarchical Indexing (SAHI)
-- Preserves legal hierarchy (Part > Chapter > Section > Article)
-- Eliminates context drift typical in generic RAG systems
-- Maintains jurisdictional precision with breadcrumb tracking
-
-### 📊 Deep Metadata Extraction
-- **Party Identification**: Distinguishes Petitioner, Respondent, Witnesses
-- **Forum Validation**: Recommends correct judicial tier
-- **Intelligence Extraction**: Pulls legal insights from unstructured documents
-
-### 🤖 Agentic RAG System
-- **Intent Classification**: Intelligently routes legal queries
-- **Parallel Retrieval**: Simultaneous Pinecone (semantic) + MongoDB (lexical) search
-- **Context Synthesis**: Combines retrieved documents with legal reasoning
-- **Hallucination Prevention**: Every AI claim backed by source documents
-
----
-
 ## 💻 Local Development Setup
 
 ### Backend (Node.js + Express)
@@ -887,22 +855,6 @@ Contributions welcome! Please:
 ## 📄 License
 
 MIT License - See [LICENSE](LICENSE) file for details.
-
----
-
-## 🔬 Research Paper
-
-Developed as a Master's thesis on **Agentic AI for Pakistani Legal Systems** at:
-
-**Military College of Signals (MCS)**  
-National University of Signals and Technology (NUST)  
-Rawalpindi, Pakistan  
-
-**Thesis Title**: *Bridging the Judicial Backlog in Pakistan through Agentic Retrieval-Augmented Generation for Automated Judicial Decision Support*
-
-**Academic Year**: 2024-2026
-
-For academic inquiries, please contact the development team.
 
 ---
 
