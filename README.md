@@ -22,7 +22,7 @@ Watch the complete walkthrough of the **Legalyze Platform** demonstrating all co
   </a>
 </div>
 
-**Watch the demo video above** to see the Case Buildup Wizard, Constitutional Compliance Engine, and Agentic RAG capabilities in action. Click the thumbnail to play on YouTube or use the embedded player below:
+**Watch the demo video above** to see the Case Buildup Wizard, Constitutional Compliance Engine, and Agentic RAG capabilities in action. Click the thumbnail to play on YouTube.
 
 ---
 
