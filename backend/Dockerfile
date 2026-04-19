@@ -1,6 +1,6 @@
 # Legalyze Backend - An Open-Source Structure-Aware Agentic RAG Platform for High-Precision Legal Intelligence
 # Backend API Server Dockerfile - Node.js + Express
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app/backend
