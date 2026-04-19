@@ -9,6 +9,18 @@ Transforming judicial workflows in Pakistan through intelligent document analysi
 
 ---
 
+## 🎬 Product Demo
+
+![Legalyze Demo](https://img.shields.io/badge/Video-Demo-red?style=for-the-badge&logo=youtube)
+
+You can watch the complete walkthrough of the **Legalyze Platform** below:
+
+[**▶️ Click here to watch the Product Demo Video**](./Product%20Demo%20Legalyze%20(Male%20Voiceover).mp4)
+
+*The demo covers Case Buildup, Constitutional Compliance, and Agentic RAG capabilities.*
+
+---
+
 ## 📖 What is Legalyze?
 
 **Legalyze** is an open-source, structure-aware agentic RAG (Retrieval-Augmented Generation) platform designed specifically for Pakistani legal systems. It transforms judicial workflows by automating legal research, constitutional compliance checking, and intelligent case drafting. The platform reduces legal research time from **hours to minutes** while maintaining **zero hallucinations** through mandatory source citations and verifiable legal reasoning.
