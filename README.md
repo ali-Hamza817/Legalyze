@@ -1,4 +1,4 @@
-# 🏛️ Legalyze: Legalyze: A Structure-Aware Agentic Retrieval System for Measurable Reduction of Hallucination in Legal Intelligence
+# 🏛️ Legalyze: A Structure-Aware Agentic Retrieval System for Measurable Reduction of Hallucination in Legal Intelligence
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
